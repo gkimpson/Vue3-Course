@@ -1,7 +1,8 @@
 require('./bootstrap');
 
-import Alpine from 'alpinejs';
+import { createApp } from 'vue'
+import PostsIndex from './components/Posts/Index'
 
-window.Alpine = Alpine;
-
-Alpine.start();
+const app = createApp({})
+app.component('posts-index', PostsIndex)
+app.mount('#app')
