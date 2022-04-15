@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Category;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -16,9 +17,12 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $categoryIds = Category::pluck('id');
+
         return [
             'title' => $this->faker->text(20),
             'content' => $this->faker->paragraphs(5, true),
+            'category_id' => $categoryIds->random(),
         ];
     }
 }
