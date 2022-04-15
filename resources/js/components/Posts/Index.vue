@@ -19,7 +19,7 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                <tr v-for="post in posts">
+                <tr v-for="post in posts.data">
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{ post.id }}
                     </td>
@@ -35,10 +35,42 @@
                 </tr>
                 </tbody>
             </table>
+
+            <Pagination :data="posts" @pagination-change-page="getPosts" />
         </div>
     </div>
 </template>
-{{ posts | json }}
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+li.page-item {
+    margin: 0 3px;
+}
+a.page-link {
+    border-radius: 50%;
+    display: block;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    place-items: center;
+    transition: all 0.18s ease-in-out;
+}
+a.page-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.2);
+}
+.active a.page-link {
+    background: rgba(0, 0, 0, 0.1);
+}
+a.page-link span.sr-only {
+    display: none;
+}
+</style>
+
 <script>
 import usePosts from '../../composables/posts';
 import { onMounted } from 'vue';
@@ -47,7 +79,8 @@ export default {
     setup() {
         const { posts, getPosts } = usePosts()
         onMounted(getPosts)
-        return { posts }
+
+        return { posts, getPosts }
     }
 
 }
