@@ -38,6 +38,7 @@
         </div>
     </div>
 </template>
+{{ posts | json }}
 <script>
 import usePosts from '../../composables/posts';
 import { onMounted } from 'vue';
@@ -46,7 +47,6 @@ export default {
     setup() {
         const { posts, getPosts } = usePosts()
         onMounted(getPosts)
-
         return { posts }
     }
 
