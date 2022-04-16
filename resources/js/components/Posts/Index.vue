@@ -51,7 +51,7 @@
                 </tbody>
             </table>
 
-            <Pagination :data="posts" @pagination-change-page="getPosts" />
+            <Pagination :data="posts" @pagination-change-page="page => getPosts(page, selectedCategory)" />
         </div>
     </div>
 </template>
@@ -87,7 +87,7 @@ a.page-link span.sr-only {
 </style>
 
 <script>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, watch } from "vue";
 import usePosts from '../../composables/posts';
 import useCategories from '../../composables/categories';
 
@@ -101,7 +101,11 @@ export default {
             getCategories()
         })
 
-        return { posts, getPosts, categories }
+        watch(selectedCategory, (current, previous) => {
+            getPosts(1, current)
+        })
+
+        return { posts, getPosts, categories, selectedCategory }
     }
 
 }
