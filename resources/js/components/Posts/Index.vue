@@ -1,6 +1,15 @@
 <template>
     <div class="overflow-hidden overflow-x-auto p-6 bg-white border-gray-200">
         <div class="min-w-full align-middle">
+            <div class="mb-4">
+                <select v-model="selectedCategory" class="block mt-1 w-full sm:w-1/4 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <option value="" selected>-- Filter by category --</option>
+                    <option v-for="category in categories" :value="category.id">
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+
             <table class="min-w-full divide-y divide-gray-200 border">
                 <thead>
                 <tr>
@@ -12,7 +21,7 @@
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left">
                         <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Category</span>
-                    </th>                    
+                    </th>
                     <th class="px-6 py-3 bg-gray-50 text-left">
                         <span class="text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Content</span>
                     </th>
@@ -31,7 +40,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{ post.category }}
-                    </td>                    
+                    </td>
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         {{ post.content }}
                     </td>
@@ -78,15 +87,21 @@ a.page-link span.sr-only {
 </style>
 
 <script>
+import { ref, onMounted } from "vue"
 import usePosts from '../../composables/posts';
-import { onMounted } from 'vue';
+import useCategories from '../../composables/categories';
 
 export default {
     setup() {
+        const selectedCategory = ref('') // use 'ref' so we can re-use the value
         const { posts, getPosts } = usePosts()
-        onMounted(getPosts)
+        const { categories, getCategories } = useCategories()
+        onMounted(() => {
+            getPosts()
+            getCategories()
+        })
 
-        return { posts, getPosts }
+        return { posts, getPosts, categories }
     }
 
 }
