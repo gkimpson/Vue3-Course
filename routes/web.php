@@ -12,5 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
- 
-Route::view('/', 'dashboard')->name('dashboard');
+
+Route::view('/{any?}', 'dashboard')
+    ->name('dashboard')
+    ->where('any', '.*');
