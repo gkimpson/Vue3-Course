@@ -10,11 +10,25 @@ class PostController extends Controller
 {
     public function index()
     {
+//        \DB::enableQueryLog();
+        $orderColumn = request('order_column', 'created_at');
+        if (!in_array($orderColumn, ['id', 'title', 'created_at'])) {
+            $orderColumn = 'title';
+        }
+
+        $orderDirection = request('order_direction', 'desc');
+        if (!in_array($orderDirection, ['asc', 'desc'])) {
+            $orderDirection = 'desc';
+        }
+
         $posts = Post::with('category')
             ->when(request('category'), function($query) {
                 $query->where('category_id', request('category'));
             })
-            ->paginate(2);
+            ->orderBy($orderColumn, $orderDirection)
+            ->paginate(5);
+//        dd(\DB::getQueryLog());
+
         return PostResource::collection($posts);
     }
 }
