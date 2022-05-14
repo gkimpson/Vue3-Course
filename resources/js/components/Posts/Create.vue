@@ -26,6 +26,19 @@
             </div>
         </div>
 
+        <!-- files -->
+        <div class="mt-4">
+            <label for="thumbnail" class="block font-medium text-sm text-gray-700">
+                Thumbnail
+            </label>
+            <input @change="post.thumbnail = $event.target.files[0]" type="file" id="thumbnail" />
+            <div class="text-red-600 mt-1">
+                <div v-for="message in validationErrors?.thumbnail">
+                    {{ message }}
+                </div>
+            </div>
+        </div>
+
         <!-- Category -->
         <div class="mt-4">
             <label for="post-category" class="block font-medium text-sm text-gray-700">
@@ -65,7 +78,8 @@ export default {
         const post = reactive({
             title: '',
             content: '',
-            category_id: ''
+            category_id: '',
+            thumbnail: '',
         })
 
         const { categories, getCategories } = useCategories()
