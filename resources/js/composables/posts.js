@@ -47,7 +47,11 @@ export default function usePosts() {
         axios.post('/api/posts', serializedPost)
             .then(response => {
                 router.push({ name: 'posts.index' })
-                swal('Post saved successfully');
+                swal({
+                    icon: 'success',
+                    title: 'Post saved successfully',
+                    timerProgressBar: true
+                });
             })
             .catch(error => {
                 if (error.response?.data) {
@@ -75,5 +79,22 @@ export default function usePosts() {
             })
             .finally(() => isLoading.value = false)
     }
-    return { posts, post, getPosts, getPost, storePost, updatePost, validationErrors, isLoading }
+
+    const deletePost = async (post) => {
+        axios.delete('/api/posts/' + post.id, post)
+            .then(response => {
+                router.push({ name: 'posts.index' })
+                swal({
+                    icon: 'success',
+                    title: 'Post deleted successfully'
+                });
+            })
+            .catch(error => {
+                swal({
+                    icon: 'error',
+                    title: 'Something went wrong'
+                });
+            })
+    }
+    return { posts, post, getPosts, getPost, storePost, updatePost, deletePost, validationErrors, isLoading }
 }

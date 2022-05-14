@@ -21733,7 +21733,8 @@ __webpack_require__.r(__webpack_exports__);
 
     var _usePosts = (0,_composables_posts__WEBPACK_IMPORTED_MODULE_1__["default"])(),
         posts = _usePosts.posts,
-        getPosts = _usePosts.getPosts;
+        getPosts = _usePosts.getPosts,
+        deletePosts = _usePosts.deletePosts;
 
     var _useCategories = (0,_composables_categories__WEBPACK_IMPORTED_MODULE_2__["default"])(),
         categories = _useCategories.categories,
@@ -21757,6 +21758,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       posts: posts,
       getPosts: getPosts,
+      deletePost: deletePost,
       categories: categories,
       selectedCategory: selectedCategory,
       orderColumn: orderColumn,
@@ -22713,7 +22715,11 @@ function usePosts() {
                 router.push({
                   name: 'posts.index'
                 });
-                swal('Post saved successfully');
+                swal({
+                  icon: 'success',
+                  title: 'Post saved successfully',
+                  timerProgressBar: true
+                });
               })["catch"](function (error) {
                 var _error$response;
 
@@ -22782,6 +22788,40 @@ function usePosts() {
     };
   }();
 
+  var deletePost = /*#__PURE__*/function () {
+    var _ref5 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(post) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              axios["delete"]('/api/posts/' + post.id, post).then(function (response) {
+                router.push({
+                  name: 'posts.index'
+                });
+                swal({
+                  icon: 'success',
+                  title: 'Post deleted successfully'
+                });
+              })["catch"](function (error) {
+                swal({
+                  icon: 'error',
+                  title: 'Something went wrong'
+                });
+              });
+
+            case 1:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, _callee5);
+    }));
+
+    return function deletePost(_x4) {
+      return _ref5.apply(this, arguments);
+    };
+  }();
+
   return {
     posts: posts,
     post: post,
@@ -22789,6 +22829,7 @@ function usePosts() {
     getPost: getPost,
     storePost: storePost,
     updatePost: updatePost,
+    deletePost: deletePost,
     validationErrors: validationErrors,
     isLoading: isLoading
   };

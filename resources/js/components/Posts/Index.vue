@@ -97,6 +97,8 @@
                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                         <router-link :to="{ name: 'posts.edit', params: { id:post.id }}">Edit</router-link>
                     </td>
+
+
                 </tr>
                 </tbody>
             </table>
@@ -146,7 +148,7 @@ export default {
         const selectedCategory = ref('') // use 'ref' so we can re-use the value
         const orderColumn = ref('')
         const orderDirection = ref('')
-        const { posts, getPosts } = usePosts()
+        const { posts, getPosts, deletePosts } = usePosts()
         const { categories, getCategories } = useCategories()
         onMounted(() => {
             getPosts()
@@ -164,7 +166,7 @@ export default {
             getPosts(1, current)
         })
 
-        return { posts, getPosts, categories, selectedCategory, orderColumn, orderDirection, updateOrdering }
+        return { posts, getPosts, deletePost, categories, selectedCategory, orderColumn, orderDirection, updateOrdering }
     }
 
 }
