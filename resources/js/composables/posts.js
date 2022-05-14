@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 
 export default function usePosts() {
@@ -7,6 +7,7 @@ export default function usePosts() {
     const router = useRouter()
     const validationErrors = ref({})
     const isLoading = ref(false)
+    const swal = inject('$swal');   // sweetalert
 
     const getPosts = async (
         page = 1,
@@ -37,9 +38,7 @@ export default function usePosts() {
         validationErrors.value = {}
 
         let serializedPost = new FormData()
-        console.log('serializedPost1', serializedPost);
         for (let item in post) {
-            console.log(item);
             if (post.hasOwnProperty(item)) {
                 serializedPost.append(item, post[item]);
             }
@@ -48,6 +47,7 @@ export default function usePosts() {
         axios.post('/api/posts', serializedPost)
             .then(response => {
                 router.push({ name: 'posts.index' })
+                swal('Post saved successfully');
             })
             .catch(error => {
                 if (error.response?.data) {
@@ -66,6 +66,7 @@ export default function usePosts() {
         axios.put('/api/posts/' + post.id, post)
             .then(response => {
                 router.push({ name: 'posts.index' })
+                swal('Post updated successfully');
             })
             .catch(error => {
                 if (error.response?.data) {
